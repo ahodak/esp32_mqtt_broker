@@ -1,0 +1,9 @@
+{
+	"folders": [
+		{
+			"name": "esp32_mqtt_broker",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
