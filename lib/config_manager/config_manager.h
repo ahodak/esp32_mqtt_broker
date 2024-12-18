@@ -1,23 +1,18 @@
-#ifndef CONFIG_MANAGER_H
-#define CONFIG_MANAGER_H
+#pragma once
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <SPIFFS.h>
 
-#ifndef CONFIG_FILE_NAME
-#define CONFIG_FILE_NAME "/config.json"
-#endif
-
-void saveConfig(JsonDocument config);
-JsonDocument loadConfig();
-
-struct WiFiConfig {
-    String ssid;
-    String password;
+// Класс для работы с конфигурацией
+class ConfigManager {   
+public:
+    // Конструктор
+    ConfigManager();
+    // Сохранение конфигурации
+    void save(String filename, JsonDocument config);
+    // Загрузка конфигурации
+    JsonDocument load(String filename);
+    // Вывод конфигурации в Serial
+    void print(String filename);
 };
-
-void saveWiFiConfig(String newSsid, String newPassword);
-WiFiConfig loadWiFiConfig();
-
-#endif

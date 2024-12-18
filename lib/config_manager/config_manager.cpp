@@ -1,8 +1,12 @@
 #include "config_manager.h"
 
+// Конструктор
+ConfigManager::ConfigManager() {
+}
+
 // Сохранение настроек
-void saveConfig(JsonDocument config) {
-    File file = SPIFFS.open(CONFIG_FILE_NAME, "w");
+void ConfigManager::save(String filename, JsonDocument config) {
+    File file = SPIFFS.open(filename, "w");
     if (!file) {
         Serial.println("Error opening config file");
         return;
@@ -16,17 +20,14 @@ void saveConfig(JsonDocument config) {
 }
 
 // Загрузка настроек
-JsonDocument loadConfig() {
-    if (SPIFFS.exists(CONFIG_FILE_NAME)) {
-        File file = SPIFFS.open(CONFIG_FILE_NAME, "r");
+JsonDocument ConfigManager::load(String filename) {
+    if (SPIFFS.exists(filename)) {
+        File file = SPIFFS.open(filename, "r");
         JsonDocument result;
         DeserializationError error = deserializeJson(result, file);
         
         if (error) {
             Serial.println("Error loading config");
-        }
-        else {
-            Serial.println("Config loaded");
         }
         
         file.close();
@@ -34,31 +35,13 @@ JsonDocument loadConfig() {
         return result;
     }
     else {
-        Serial.println("Config file not found");
+        Serial.println("Config file " + filename + " not found");
         return JsonDocument();
     }
 }
 
-// Сохранение настроек WiFi
-void saveWiFiConfig(String newSsid, String newPassword) {
-    JsonDocument config;
-
-    config["ssid"] = newSsid;
-    config["password"] = newPassword;
-
-    saveConfig(config);
-}
-
-// Загрузка настроек WiFi
-WiFiConfig loadWiFiConfig() {
-    JsonDocument config = loadConfig();
-
-    if (config["ssid"].is<String>() && config["password"].is<String>()) { 
-        Serial.println("WiFi config loaded");
-        return {config["ssid"].as<String>(), config["password"].as<String>()};
-    }
-    else {
-        Serial.println("Config file does not contain ssid or password");
-        return {"", ""} ;
-    }
+// Вывод конфигурации в Serial
+void ConfigManager::print(String filename) {
+    JsonDocument config = this->load(filename);
+    serializeJson(config, Serial);
 }

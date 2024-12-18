@@ -5,5 +5,10 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"*.dbclient-js": "javascript",
+			"functional": "cpp"
+		}
+	}
 }

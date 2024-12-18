@@ -1,5 +1,4 @@
-#ifndef DISPLAY_H
-#define DISPLAY_H
+#pragma once
 
 #include <Arduino.h>
 #ifdef TTGO_T_DISPLAY
@@ -24,5 +23,3 @@ void clearDisplay();
 void displayError(String message);
 void displayLine(String message);
 void displayProgress(int startFromLine);
-
-#endif
