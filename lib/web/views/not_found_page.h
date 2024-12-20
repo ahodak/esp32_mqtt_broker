@@ -1,5 +1,8 @@
 #pragma once
 
+#include "menu.h"
+#include "footer.h"
+
 #define NOT_FOUND_PAGE "\
 <!DOCTYPE html>\
 <html lang='ru'>\
@@ -7,12 +10,13 @@
         <title>MQTT Broker - Страница не найдена</title>\
         <meta charset='utf-8'/>\
         <meta name='viewport' content='width=device-width, initial-scale=1'/>\
+        <link rel='stylesheet' href='/styles.css'/>\
     </head>\
     <body>\
-        <div class='text-center'>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/setup\"'>Настройка</button>\
-            <button class='btn btn-danger' onclick='window.location.href=\"/reboot?delay=%delay%\"'>Перезагрузка</button>\
-            <button class='btn btn-warning' onclick='window.location.href=\"/\"'>Назад</button>\
+        " MENU_PAGE "\
+        <div class='alert alert-danger'>\
+            <strong>Страница не найдена</strong>\
         </div>\
+        " FOOTER_PAGE "\
     </body>\
 </html>"

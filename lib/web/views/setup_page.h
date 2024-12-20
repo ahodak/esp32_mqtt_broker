@@ -1,5 +1,8 @@
 #pragma once
 
+#include "menu.h"
+#include "footer.h"
+
 #define SETUP_PAGE "\
 <!DOCTYPE html>\
 <html lang='ru'>\
@@ -10,12 +13,7 @@
         <link rel='stylesheet' href='/styles.css'/>\
     </head>\
     <body>\
-        <div class='text-center'>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/\"'>Главная</button>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/setup\"'>Настройка</button>\
-            <button class='btn btn-danger' onclick='window.location.href=\"/reboot?delay=%delay%\"'>Перезагрузка</button>\
-        </div>\
-        <h1>Настройки</h1>\
+        " MENU_PAGE "\
         <div class='container'>\
             <form action='/setup' method='post'>\
                 <div class='input-group'>\
@@ -31,8 +29,10 @@
                     <span class='input-group-addon'>Перезагрузка, сек:</span>\
                     <input class='form-control' type='number' name='reboot_delay' placeholder='Задержка перезагрузки' value='%delay%' required/>\
                 </div>\
-                <button class='btn btn-default marginTop0'>Сохранить</button>\
+                <hr />\
+                <button type='submit' class='btn btn-primary marginTop0'>Сохранить</button>\
             </form>\
         </div>\
+        " FOOTER_PAGE "\
     </body>\
 </html>"

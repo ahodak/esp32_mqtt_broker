@@ -10,8 +10,12 @@ String ssid = DEFAULT_SSID;
 String password = DEFAULT_PASSWORD;
 bool isAP = false;
 
+int rebootDelay = 0;
 int currentRebootCycle = 0;
 bool isRebooting = false;
+unsigned long previousMillis = 0;
+int dataDelay = 0;
+int currentSensorCycle = 0;
 
 // Создаем объекты
 WiFiServer tcp_server(MQTT_BROKER_PORT);
@@ -22,6 +26,43 @@ WebSrv webServer;
 
 WiFiConfig wifiConfig;
 CommonConfig commonConfig;
+
+void publishMessage(String topic, String payload, bool qos = 0, bool retain = false, int message_id = 0)
+{
+    Serial.println("Publishing message:\ntopic=" + topic + "\npayload=" + payload + "\nqos=" + String(qos) + "\nretain=" + String(retain) + "\nmessage_id=" + String(message_id));
+
+	broker.publish(topic, payload, qos, retain, message_id);
+
+    clearDisplay();
+    displayLine("Message published:");
+    displayLine("topic=" + topic);
+    displayLine("qos=" + String(qos));
+    displayLine("retain=" + String(retain));
+    displayLine("message_id=" + String(message_id));
+}
+
+void subscribeToTopic(String topic_filter)
+{
+    broker.subscribe(topic_filter,
+        [](String topic, String payload) {
+            clearDisplay();
+            displayLine("Received message:");
+            displayLine("topic=" + topic);
+            displayLine("payload=" + payload);
+        }
+    );
+
+    clearDisplay();
+    displayLine("Subscribed to topic: " + topic_filter);
+}
+
+void unsubscribeFromTopic(String topic_filter)
+{
+    broker.unsubscribe(topic_filter);
+
+    clearDisplay();
+    displayLine("Unsubscribed from topic: " + topic_filter);
+}
 
 void handleTimerWhileRebooting()
 {
@@ -47,6 +88,11 @@ void rebootESP()
 void setup() {
     Serial.begin(SERIAL_BAUD_RATE);
 
+    currentSensorCycle = 0;
+    currentRebootCycle = 0;
+    previousMillis = 0;
+    isRebooting = false;
+
     // Инициализация дисплея
     initDisplay();
     displayLine("Starting...");
@@ -63,6 +109,8 @@ void setup() {
         displayError("Error loading WiFi config");
         return; 
     }
+    ssid = wifiConfig.ssid();
+    password = wifiConfig.password();
 
     // Загрузка общих настроек
     commonConfig = CommonConfig();
@@ -70,9 +118,8 @@ void setup() {
         displayError("Error loading Common config");
         return;
     }
-
-    ssid = wifiConfig.ssid();
-    password = wifiConfig.password();
+    rebootDelay = commonConfig.rebootDelay();
+    dataDelay = commonConfig.dataDelay();
 
     // Подключение к WiFi
     WiFi.begin(ssid.c_str(), password.c_str());
@@ -109,7 +156,14 @@ void setup() {
     }
 
     // Инициализация веб-сервера
-    webServer.init(&server, &wifiConfig, &commonConfig, isAP, &rebootESP);
+    webServer.init(&server,
+        &wifiConfig,
+        &commonConfig,
+        isAP,
+        &rebootESP,
+        &publishMessage,
+        &subscribeToTopic,
+        &unsubscribeFromTopic);
 }
 
 void loop() {
@@ -119,9 +173,28 @@ void loop() {
     // Обработка запросов MQTT брокера
     broker.loop();
 
-    if (isRebooting)
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= ONE_SECOND)
     {
-        currentRebootCycle++;
-        handleTimerWhileRebooting();
+        previousMillis = currentMillis;
+
+        if (isRebooting)
+        {
+            currentRebootCycle++;
+            handleTimerWhileRebooting();
+        }
+		else
+		{
+            if (currentSensorCycle % dataDelay == 0)
+			{
+				//Serial.println("\r\nGetting sensors data...");
+				//requestSensorValues();
+				//renderSensorValues();
+				//if (WiFi.status() == WL_CONNECTED)
+				//{
+				//	sendSensorsData();
+				//}
+			}
+		}
     }
 }

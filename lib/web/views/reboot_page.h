@@ -1,5 +1,8 @@
 #pragma once
 
+#include "menu.h"
+#include "footer.h"
+
 #define REBOOT_PAGE "\
 <!DOCTYPE html>\
 <html lang='ru'>\
@@ -40,13 +43,10 @@
         </script>\
     </head>\
     <body>\
-        <div class='text-center'>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/setup\"'>Настройка</button>\
-            <button class='btn btn-danger' onclick='window.location.href=\"/reboot?delay=%delay%\"'>Перезагрузка</button>\
-            <button class='btn btn-warning' onclick='window.location.href=\"/\"'>Назад</button>\
-        </div>\
+        " MENU_PAGE "\
         <div class='alert alert-info'>\
             <strong id='info'>Модуль будет перезагружен через %delay% секунд.</strong>\
         </div>\
+        " FOOTER_PAGE "\
     </body>\
 </html>"

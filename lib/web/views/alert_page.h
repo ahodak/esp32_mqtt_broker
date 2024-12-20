@@ -1,5 +1,8 @@
 #pragma once
 
+#include "menu.h"
+#include "footer.h"
+
 #define ALERT_PAGE "\
 <!DOCTYPE html>\
 <html lang='ru'>\
@@ -10,12 +13,9 @@
         <link rel='stylesheet' href='/styles.css'/>\
     </head>\
     <body>\
-        <div class='text-center'>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/\"'>Главная</button>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/setup\"'>Настройка</button>\
-            <button class='btn btn-danger' onclick='window.location.href=\"/reboot?delay=%delay%\"'>Перезагрузка</button>\
-        </div>\
+        " MENU_PAGE "\
         <h1>%title%</h1>\
         <p>%message%</p>\
+        " FOOTER_PAGE "\
     </body>\
 </html>"

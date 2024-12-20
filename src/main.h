@@ -16,3 +16,5 @@
 
 #define AP_SSID "MQTT-Broker-Setup"
 #define AP_PASSWORD "12345678"
+
+#define ONE_SECOND 1000

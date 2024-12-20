@@ -8,7 +8,9 @@
 	"settings": {
 		"files.associations": {
 			"*.dbclient-js": "javascript",
-			"functional": "cpp"
+			"functional": "cpp",
+			"cstdlib": "cpp",
+			"random": "cpp"
 		}
 	}
 }

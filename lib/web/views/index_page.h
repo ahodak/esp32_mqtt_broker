@@ -1,5 +1,8 @@
 #pragma once
 
+#include "menu.h"
+#include "footer.h"
+
 #define INDEX_PAGE "\
 <!DOCTYPE html>\
 <html lang='ru'>\
@@ -10,17 +13,24 @@
         <link rel='stylesheet' href='/styles.css'/>\
     </head>\
     <body>\
-        <div class='text-center'>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/\"'>Главная</button>\
-            <button class='btn btn-primary' onclick='window.location.href=\"/setup\"'>Настройка</button>\
-            <button class='btn btn-danger' onclick='window.location.href=\"/reboot?delay=%delay%\"'>Перезагрузка</button>\
+        " MENU_PAGE "\
+        <div class='container'>\
+            <h1>Параметры MQTT</h1>\
+            <p>Версия протокола: <strong>3.1.1</strong></p>\
+            <div class='mqtt-status'>\
+                %if_ap_mode%\
+                <p class='warning'>WiFi не подключен</p>\
+                <p class='warning'>MQTT не запущен</p>\
+                %endif_ap_mode%\
+                %if_sta_mode%\
+                <p>IP: <strong>%ip%</strong></p>\
+                <p>Порт: <strong>1883</strong></p>\
+                %endif_sta_mode%\
+            </div>\
+            <hr />\
+            <h1>Параметры WiFi</h1>\
+            <p>SSID: <strong>%ssid%</strong></p>\
         </div>\
-        <h1>MQTT Broker</h1>\
-        <h2>Параметры MQTT</h2>\
-        <p>Версия протокола: <strong>3.1.1</strong></p>\
-        %mqtt_settings%\
-        <h2>Параметры WiFi</h2>\
-        <p>SSID: <strong>%ssid%</strong></p><br/>\
-        <p>&copy; Золин Павел &lt;pashamasterz@yandex.ru&gt;, 2024</p>\
+        " FOOTER_PAGE "\
     </body>\
 </html>"
