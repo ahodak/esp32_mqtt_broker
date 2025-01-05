@@ -1,7 +1,7 @@
 #pragma once
 
-#include "menu.h"
-#include "footer.h"
+#include "menu.tpl"
+#include "footer.tpl"
 
 #define ALERT_PAGE "\
 <!DOCTYPE html>\
@@ -14,8 +14,9 @@
     </head>\
     <body>\
         " MENU_PAGE "\
-        <h1>%title%</h1>\
-        <p>%message%</p>\
+        <div class='alert alert-info'>\
+            <strong id='info'>%message%</strong>\
+        </div>\
         " FOOTER_PAGE "\
     </body>\
 </html>"

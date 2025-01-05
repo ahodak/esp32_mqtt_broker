@@ -1,7 +1,7 @@
 #pragma once
 
-#include "menu.h"
-#include "footer.h"
+#include "menu.tpl"
+#include "footer.tpl"
 
 #define SUBSCRIBE_PAGE "\
 <!DOCTYPE html>\

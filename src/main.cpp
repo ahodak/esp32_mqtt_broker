@@ -1,9 +1,10 @@
-#include "main.h"
+#include "main.hpp"
 
-#include "wifi_config.h"
-#include "common_config.h"
-#include "display.h"
-#include "WebSrv.h"
+#include "wifi_config.hpp"
+#include "common_config.hpp"
+#include "display.hpp"
+#include "WebSrv.hpp"
+#include "mqtt.hpp"
 
 // Настройки WiFi по умолчанию
 String ssid = DEFAULT_SSID;
@@ -17,11 +18,17 @@ unsigned long previousMillis = 0;
 int dataDelay = 0;
 int currentSensorCycle = 0;
 
-// Создаем объекты
-WiFiServer tcp_server(MQTT_BROKER_PORT);
-PicoMQTT::Server broker(tcp_server);
+String mqttUser = "admin";
+String mqttPassword = "admin";
 
+// Создаем объекты
+MQTT broker(MQTT_BROKER_PORT, "WiFiServer");
+
+#ifdef ESP32
 WebServer server;
+#elif ESP8266
+ESP8266WebServer server;
+#endif
 WebSrv webServer;
 
 WiFiConfig wifiConfig;
@@ -97,11 +104,11 @@ void setup() {
     initDisplay();
     displayLine("Starting...");
 
-    // Инициализация SPIFFS
-    if (!SPIFFS.begin(true)) {
-        Serial.println("SPIFFS initialization failed");
+    // Инициализация LittleFS
+    if (!LittleFS.begin()) {
+        Serial.println("LittleFS initialization failed");
     }
-    Serial.println("SPIFFS initialized");
+    Serial.println("LittleFS initialized");
 
     // Загрузка настроек WiFi
     wifiConfig = WiFiConfig();
@@ -120,6 +127,9 @@ void setup() {
     }
     rebootDelay = commonConfig.rebootDelay();
     dataDelay = commonConfig.dataDelay();
+
+    mqttUser = commonConfig.mqttUser();
+    mqttPassword = commonConfig.mqttPassword();
 
     // Подключение к WiFi
     WiFi.begin(ssid.c_str(), password.c_str());
@@ -141,8 +151,12 @@ void setup() {
         isAP = false;
 
         // Запуск MQTT брокера
+        broker.username(mqttUser.c_str());
+        broker.password(mqttPassword.c_str());
         broker.begin();
         displayLine("MQTT Broker Started");
+        displayLine("Broker username: " + mqttUser);
+        displayLine("Broker password: " + mqttPassword);
     } else {
         displayLine("WiFi Failed");
 

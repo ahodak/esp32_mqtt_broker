@@ -1,11 +1,11 @@
 #include <unity.h>
 #include <Arduino.h>
 #include <WiFi.h>
-#include <SPIFFS.h>
+#include <LittleFS.h>
 #include <ArduinoJson.h>
 #include <PicoMQTT.h>
 
-#include "../lib/config_manager/config_manager.h"
+#include "../lib/config/config_manager.hpp"
 
 String test_ssid = "TestSSID";
 String test_password = "TestPassword";
@@ -16,12 +16,12 @@ PicoMQTT::Server broker(tcp_server);
 
 void setUp(void) {
     // Инициализация перед каждым тестом
-    SPIFFS.begin(true);
+    LittleFS.begin(true);
 }
 
 void tearDown(void) {
     // Очистка после каждого теста
-    SPIFFS.format();
+    LittleFS.format();
 }
 
 // Тест сохранения конфигурации
@@ -30,7 +30,7 @@ void test_save_config(void) {
     saveWiFiConfig(test_ssid, test_password);
     
     // Проверка
-    File file = SPIFFS.open("/config.json", "r");
+    File file = LittleFS.open("/config.json", "r");
     TEST_ASSERT_TRUE(file);
     
     JsonDocument doc;

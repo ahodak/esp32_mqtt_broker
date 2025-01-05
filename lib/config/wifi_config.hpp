@@ -1,6 +1,6 @@
 #pragma once
 
-#include "config_manager.h"
+#include "config_manager.hpp"
 
 #define WIFI_CONFIG_FILE_NAME "/wifi_config.json"
 #define DEFAULT_SSID "PashaMaster"

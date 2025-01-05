@@ -1,19 +1,23 @@
-#include "WebSrv.h"
-#include "wifi_config.h"
-#include "common_config.h"
+#include "WebSrv.hpp"
+#include "wifi_config.hpp"
+#include "common_config.hpp"
 
-#include "views/styles.h"
-#include "views/scripts.h"
-#include "views/index_page.h"
-#include "views/publish_page.h"
-#include "views/subscribe_page.h"
-#include "views/reboot_page.h"
-#include "views/setup_page.h"
-#include "views/not_found_page.h"
-#include "views/alert_page.h"
+#include "views/styles.tpl"
+#include "views/scripts.tpl"
+#include "views/index_page.tpl"
+#include "views/publish_page.tpl"
+#include "views/subscribe_page.tpl"
+#include "views/reboot_page.tpl"
+#include "views/setup_page.tpl"
+#include "views/not_found_page.tpl"
+#include "views/alert_page.tpl"
 
 // Инициализация веб-сервера
+#ifdef ESP32
 void WebSrv::init(WebServer* server,
+#elif ESP8266
+void WebSrv::init(ESP8266WebServer* server,
+#endif
                 WiFiConfig* wifiConfig,
                 CommonConfig* commonConfig,
                 bool isAP,
@@ -68,6 +72,8 @@ void WebSrv::handleShowIndex() {
     html.replace("%ssid%", this->_wifiConfig->ssid());
     html.replace("%local_ip%", WiFi.localIP().toString());
     html.replace("%ip%", WiFi.localIP().toString());
+    html.replace("%mqtt_user%", this->_commonConfig->mqttUser());
+    html.replace("%mqtt_password%", this->_commonConfig->mqttPassword());
 
     processConditionalBlock(html, "ap_mode", _isAP);
     processConditionalBlock(html, "sta_mode", !_isAP);
@@ -170,6 +176,8 @@ void WebSrv::handleShowSettings() {
     replaceCommonTemplateVars(html);
     html.replace("%ssid%", this->_wifiConfig->ssid());
     html.replace("%password%", this->_wifiConfig->password());
+    html.replace("%mqtt_user%", this->_commonConfig->mqttUser());
+    html.replace("%mqtt_password%", this->_commonConfig->mqttPassword());
     
     this->_server->send(200, "text/html", html);
 }
@@ -180,13 +188,18 @@ void WebSrv::handleSaveSettings() {
         this->_wifiConfig->ssid(this->_server->arg("ssid"));
         this->_wifiConfig->password(this->_server->arg("password"));
     }
+        
+    if (this->_server->hasArg("mqtt_user") && this->_server->hasArg("mqtt_password")) {
+        this->_commonConfig->mqttUser(this->_server->arg("mqtt_user"));
+        this->_commonConfig->mqttPassword(this->_server->arg("mqtt_password"));
+    }
+
     if (this->_server->hasArg("reboot_delay")) {
         this->_commonConfig->rebootDelay(this->_server->arg("reboot_delay").toInt());
     }
     this->_wifiConfig->save();
 
     String html = ALERT_PAGE;
-    html.replace("%title%", "Настройки");
     html.replace("%message%", "Настройки сохранены. Перезагрузите устройство чтобы изменения вступили в силу.");
     this->_server->send(200, "text/html", html);
 }
@@ -227,7 +240,7 @@ String WebSrv::renderParameterRow(String paramName,
                 "</div>");
 }
 
-//  Добавить в класс WebSrv private метод
+// Отобразить блок в зависимости от выполнения условия
 void WebSrv::processConditionalBlock(String& html, const String& conditionName, bool keepBlock) {
     if (keepBlock) {
         // Удаляем только маркеры
@@ -241,6 +254,7 @@ void WebSrv::processConditionalBlock(String& html, const String& conditionName, 
     }
 }
 
+// Подставить в шаблон значения переменных
 void WebSrv::replaceCommonTemplateVars(String& html) {
     html.replace("%delay%", String(this->_commonConfig->rebootDelay()));
 }

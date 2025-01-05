@@ -1,10 +1,14 @@
 #pragma once
 
 #include <Arduino.h>
+#ifdef ESP32
 #include <WebServer.h>
+#elif ESP8266
+#include <ESP8266WebServer.h>
+#endif
 
-#include "wifi_config.h"
-#include "common_config.h"
+#include "wifi_config.hpp"
+#include "common_config.hpp"
 
 #define WEB_SERVER_PORT 80
 
@@ -12,7 +16,11 @@
 class WebSrv
 {
     private:
+#ifdef ESP32
         WebServer* _server;
+#elif ESP8266
+        ESP8266WebServer* _server;
+#endif
 
         WiFiConfig* _wifiConfig;
         CommonConfig* _commonConfig;
@@ -46,7 +54,11 @@ class WebSrv
         typedef std::function<void(String topic, String payload, bool qos, bool retain, int message_id)> TPublishMessageFunction;
         typedef std::function<void(String topic_filter)> TSubscribeFunction;
         typedef std::function<void(String topic_filter)> TUnsubscribeFunction;
+#ifdef ESP32
         void init(WebServer* server,
+#elif ESP8266
+        void init(ESP8266WebServer* server,
+#endif
                 WiFiConfig* wifiConfig,
                 CommonConfig* commonConfig,
                 bool isAP,

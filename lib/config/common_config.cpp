@@ -1,4 +1,4 @@
-#include "common_config.h"
+#include "common_config.hpp"
 
 // Конструктор
 CommonConfig::CommonConfig() {
@@ -6,8 +6,10 @@ CommonConfig::CommonConfig() {
 
     this->rebootDelay(DEFAULT_REBOOT_DELAY);
     this->dataDelay(DEFAULT_DATA_DELAY);
+    this->mqttUser(DEFAULT_MQTT_USER);
+    this->mqttPassword(DEFAULT_MQTT_PASSWORD);
 
-    if(!SPIFFS.exists(CONFIG_FILE_NAME)) {
+    if(!LittleFS.exists(CONFIG_FILE_NAME)) {
         Serial.println("Creating Common config file");
         this->save();
     }
@@ -37,6 +39,24 @@ void CommonConfig::dataDelay(int newDataDelay) {
     this->_isChanged = true;
 }
 
+String CommonConfig::mqttUser() {
+    return this->_mqttUser;
+}
+
+void CommonConfig::mqttUser(String newMqttUser) {
+    this->_mqttUser = newMqttUser;
+    this->_isChanged = true;
+}
+
+String CommonConfig::mqttPassword() {
+    return this->_mqttPassword;
+}
+
+void CommonConfig::mqttPassword(String newMqttPassword) {
+    this->_mqttPassword = newMqttPassword;
+    this->_isChanged = true;
+}
+
 // Загрузка настроек
 bool CommonConfig::load() {
     try {
@@ -44,6 +64,8 @@ bool CommonConfig::load() {
 
         this->_rebootDelay = config["reboot_delay"].as<int>();
         this->_dataDelay = config["data_delay"].as<int>();
+        this->_mqttUser = config["mqtt_user"].as<String>();
+        this->_mqttPassword = config["mqtt_password"].as<String>();
         this->_isChanged = false;
         Serial.println("Common config loaded");
 
@@ -62,6 +84,8 @@ bool CommonConfig::save() {
 
             config["reboot_delay"] = this->_rebootDelay;
             config["data_delay"] = this->_dataDelay;
+            config["mqtt_user"] = this->_mqttUser;
+            config["mqtt_password"] = this->_mqttPassword;
 
             this->configManager.save(CONFIG_FILE_NAME, config);
             this->_isChanged = false;

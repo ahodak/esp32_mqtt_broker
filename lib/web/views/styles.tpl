@@ -3,8 +3,8 @@
 #define STYLES "\
 body {font-family: tahoma; font-size: 14px;}\
 a {text-decoration: none;}\
-h1 {font-size: 1.2em; margin: 5px;}\
-p {margin-left: 15px;}\
+h1 {font-size: 1.2em; margin: 5px; color: #333;}\
+p {margin-left: 15px; color: #333;}\
 hr {margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #eee;}\
 .nav-menu { margin: 0; padding: 0; list-style: none; background: #f8f9fa; border-radius: 4px; }\
 .nav-menu li { position: relative; display: inline-block; }\
@@ -20,6 +20,7 @@ hr {margin-top: 20px; margin-bottom: 20px; border: 0; border-top: 1px solid #eee
 .warning {color: red;}\
 .info-message {float: right; margin: 6px 12px; color: blue;}\
 .container {margin: 5px; border: 1px solid #ddd; width: 400px; border-radius: 4px;}\
+.row {margin: 20px 10px 10px 10px;}\
 .input-group {position: relative; display: table; border-collapse: separate; margin: 10px;}\
 .input-group-addon:first-child {border-right: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;}\
 .input-group .form-control:last-child {border-top-left-radius: 0; border-bottom-left-radius: 0;}\
@@ -45,6 +46,6 @@ input[type='checkbox'].form-control {box-shadow: none; width: 220px;}\
 .alert-danger {background-image: -webkit-linear-gradient(top,#f2dede 0,#e7c3c3 100%); background-image: -o-linear-gradient(top,#f2dede 0,#e7c3c3 100%); background-image: -webkit-gradient(linear,left top,left bottom,from(#f2dede),to(#e7c3c3)); background-image: linear-gradient(to bottom,#f2dede 0,#e7c3c3 100%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff2dede', endColorstr='#ffe7c3c3', GradientType=0); background-repeat: repeat-x; border-color: #dca7a7;}\
 .alert-info {background-image: -webkit-linear-gradient(top,#d9edf7 0,#b9def0 100%); background-image: -o-linear-gradient(top,#d9edf7 0,#b9def0 100%); background-image: -webkit-gradient(linear,left top,left bottom,from(#d9edf7),to(#b9def0)); background-image: linear-gradient(to bottom,#d9edf7 0,#b9def0 100%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd9edf7', endColorstr='#ffb9def0', GradientType=0); background-repeat: repeat-x; border-color: #9acfea;}\
 .info-icon {cursor: help; color: #007acc;}\
-.footer {height: 30px; width: 100%; border-top: 1px solid #ddd;}"
+.footer {background-color: #f8f9fa; border-radius: 4px; display: flex; align-items: center;}"
 
 #define STYLE_BOOTSTRAP_BUTTONS "a {text-decoration: none;}"

@@ -1,4 +1,4 @@
-#include "display.h"
+#include "display.hpp"
 
 #ifdef TTGO_T_DISPLAY
 TFT_eSPI tft = TFT_eSPI(TFT_WIDTH, TFT_HEIGHT);

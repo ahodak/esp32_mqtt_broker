@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"name": "esp32_mqtt_broker",
+			"name": "esp_mqtt_broker",
 			"path": "."
 		}
 	],

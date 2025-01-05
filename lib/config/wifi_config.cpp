@@ -1,4 +1,4 @@
-#include "wifi_config.h"
+#include "wifi_config.hpp"
 
 // Конструктор
 WiFiConfig::WiFiConfig() {
@@ -7,7 +7,7 @@ WiFiConfig::WiFiConfig() {
     this->ssid(DEFAULT_SSID);
     this->password(DEFAULT_PASSWORD);
 
-    if(!SPIFFS.exists(WIFI_CONFIG_FILE_NAME)) {
+    if(!LittleFS.exists(WIFI_CONFIG_FILE_NAME)) {
         Serial.println("Creating WiFi config file");
         this->save();
     }

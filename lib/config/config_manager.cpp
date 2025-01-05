@@ -1,4 +1,4 @@
-#include "config_manager.h"
+#include "config_manager.hpp"
 
 // Конструктор
 ConfigManager::ConfigManager() {
@@ -6,7 +6,7 @@ ConfigManager::ConfigManager() {
 
 // Сохранение настроек
 void ConfigManager::save(String filename, JsonDocument config) {
-    File file = SPIFFS.open(filename, "w");
+    File file = LittleFS.open(filename, "w");
     if (!file) {
         Serial.println("Error opening config file");
         return;
@@ -21,8 +21,8 @@ void ConfigManager::save(String filename, JsonDocument config) {
 
 // Загрузка настроек
 JsonDocument ConfigManager::load(String filename) {
-    if (SPIFFS.exists(filename)) {
-        File file = SPIFFS.open(filename, "r");
+    if (LittleFS.exists(filename)) {
+        File file = LittleFS.open(filename, "r");
         JsonDocument result;
         DeserializationError error = deserializeJson(result, file);
         
