@@ -13,7 +13,6 @@
 #include <ESP8266WebServer.h>
 #endif
 
-
 #define SERIAL_BAUD_RATE 115200
 
 #define WIFI_CONNECTION_ATTEMPTS 20

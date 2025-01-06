@@ -1,5 +1,6 @@
 #pragma once
 
+#include "head.tpl"
 #include "menu.tpl"
 #include "footer.tpl"
 
@@ -8,14 +9,12 @@
 <html lang='ru'>\
     <head>\
         <title>MQTT Broker - %title%</title>\
-        <meta charset='utf-8'/>\
-        <meta name='viewport' content='width=device-width, initial-scale=1'/>\
-        <link rel='stylesheet' href='/styles.css'/>\
+        " PAGE_HEAD "\
     </head>\
     <body>\
         " MENU_PAGE "\
-        <div class='alert alert-info'>\
-            <strong id='info'>%message%</strong>\
+        <div class='alert alert-primary' role='alert'>\
+            %message%\
         </div>\
         " FOOTER_PAGE "\
     </body>\

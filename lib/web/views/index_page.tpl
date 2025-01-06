@@ -1,5 +1,6 @@
 #pragma once
 
+#include "head.tpl"
 #include "menu.tpl"
 #include "footer.tpl"
 
@@ -8,31 +9,119 @@
 <html lang='ru'>\
     <head>\
         <title>MQTT Broker</title>\
-        <meta charset='utf-8'/>\
-        <meta name='viewport' content='width=device-width, initial-scale=1'/>\
-        <link rel='stylesheet' href='/styles.css'/>\
+        " PAGE_HEAD "\
+    </head>\
     </head>\
     <body>\
         " MENU_PAGE "\
         <div class='container'>\
             <div class='row'>\
-                <h1>Параметры MQTT</h1>\
-                <p>Версия протокола: <strong>3.1.1</strong></p>\
-                <div class='mqtt-status'>\
-                    %if_ap_mode%\
-                    <p class='warning'>WiFi не подключен</p>\
-                    <p class='warning'>MQTT не запущен</p>\
-                    %endif_ap_mode%\
-                    %if_sta_mode%\
-                    <p>IP: <strong>%ip%</strong></p>\
-                    <p>Порт: <strong>1883</strong></p>\
-                    %endif_sta_mode%\
+                <div class='col-md-6'>\
+                    <div class='card bg-light mb-3'>\
+                        <h5 class='card-header'>MQTT брокер</h5>\
+                        <div class='card-body'>\
+                            %if_ap_mode%\
+                            <div class='row'>\
+                                <div class='col-4'>MQTT</div>\
+                                <div class='col-8 warning'>не запущен</div>\
+                            </div>\
+                            %endif_ap_mode%\
+                            %if_sta_mode%\
+                            <div class='row'>\
+                                <div class='col-4'>Версия протокола:</div>\
+                                <div class='col-8'><strong>3.1.1</strong></div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>IP:</div>\
+                                <div class='col-8'>%ip%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Порт:</div>\
+                                <div class='col-8'>1883</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Пользователь:</div>\
+                                <div class='col-8'>%mqtt_user%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Пароль:</div>\
+                                <div class='col-8'>%mqtt_password%</div>\
+                            </div>\
+                            %endif_sta_mode%\
+                        </div>\
+                    </div>\
+                </div>\
+                <div class='col-md-6'>\
+                    <div class='card bg-light mb-3'>\
+                        <h5 class='card-header'>Сеть</h5>\
+                        <div class='card-body'>\
+                            <div class='row'>\
+                                <div class='col-4'>SSID:</div>\
+                                <div class='col-8'>%ssid%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>IP:</div>\
+                                <div class='col-8'>%ip%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>MAC:</div>\
+                                <div class='col-8'>%mac_address%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>RSSI:</div>\
+                                <div class='col-8'>%rssi% дБм</div>\
+                            </div>\
+                        </div>\
+                    </div>\
                 </div>\
             </div>\
-            <hr />\
-            <div class='row' style='margin-bottom: 20px;'>\
-                <h1>Параметры WiFi</h1>\
-                <p>SSID: <strong>%ssid%</strong></p>\
+            <div class='row'>\
+                <div class='col-md-6'>\
+                    <div class='card bg-light mb-3'>\
+                        <h5 class='card-header'>Модуль</h5>\
+                        <div class='card-body'>\
+                            <div class='row'>\
+                            <div class='col-4'>Модель:</div>\
+                                <div class='col-8'>%module_chip_model% рев. %module_chip_revision%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Частота:</div>\
+                                <div class='col-8'>%module_chip_speed% MHz</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Ядер:</div>\
+                                <div class='col-8'>%module_chip_cores%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Размер ОЗУ:</div>\
+                                <div class='col-8'>%module_heap_size%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Размер Flash:</div>\
+                                <div class='col-8'>%module_chip_flash_size%</div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
+                <div class='col-md-6'>\
+                    <div class='card bg-light mb-3'>\
+                        <h5 class='card-header'>Диагностика</h5>\
+                        <div class='card-body'>\
+                            <div class='row'>\
+                                <div class='col-4'>Время работы:</div>\
+                                <div class='col-8'>%uptime%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Свободно ОЗУ:</div>\
+                                <div class='col-8'>%module_heap_free%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Макс. размер блока:</div>\
+                                <div class='col-8'>%module_heap_max%</div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
             </div>\
         </div>\
         " FOOTER_PAGE "\

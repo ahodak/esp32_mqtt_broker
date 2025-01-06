@@ -1,5 +1,6 @@
 #pragma once
 
+#include "head.tpl"
 #include "menu.tpl"
 #include "footer.tpl"
 
@@ -8,13 +9,11 @@
 <html lang='ru'>\
     <head>\
         <title>MQTT Broker - Страница не найдена</title>\
-        <meta charset='utf-8'/>\
-        <meta name='viewport' content='width=device-width, initial-scale=1'/>\
-        <link rel='stylesheet' href='/styles.css'/>\
+        " PAGE_HEAD "\
     </head>\
     <body>\
         " MENU_PAGE "\
-        <div class='alert alert-danger'>\
+        <div class='alert alert-danger' role='alert'>\
             <strong>Страница не найдена</strong>\
         </div>\
         " FOOTER_PAGE "\

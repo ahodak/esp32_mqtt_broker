@@ -34,18 +34,16 @@ WebSrv webServer;
 WiFiConfig wifiConfig;
 CommonConfig commonConfig;
 
-void publishMessage(String topic, String payload, bool qos = 0, bool retain = false, int message_id = 0)
+void publishMessage(String topic, String payload)
 {
-    Serial.println("Publishing message:\ntopic=" + topic + "\npayload=" + payload + "\nqos=" + String(qos) + "\nretain=" + String(retain) + "\nmessage_id=" + String(message_id));
+    Serial.println("Publishing message:\ntopic=" + topic + "\npayload=" + payload);
 
-	broker.publish(topic, payload, qos, retain, message_id);
+	broker.publish(topic, payload, 0, false, 0);
 
     clearDisplay();
     displayLine("Message published:");
     displayLine("topic=" + topic);
-    displayLine("qos=" + String(qos));
-    displayLine("retain=" + String(retain));
-    displayLine("message_id=" + String(message_id));
+    displayLine("payload=" + payload);
 }
 
 void subscribeToTopic(String topic_filter)
@@ -104,9 +102,10 @@ void setup() {
     initDisplay();
     displayLine("Starting...");
 
-    // Инициализация LittleFS
-    if (!LittleFS.begin()) {
+    // Инициализация файловой системы
+    if (!LittleFS.begin(true)) {
         Serial.println("LittleFS initialization failed");
+        return;
     }
     Serial.println("LittleFS initialized");
 

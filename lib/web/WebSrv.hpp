@@ -7,11 +7,18 @@
 #include <ESP8266WebServer.h>
 #endif
 
+#include "version.hpp"
+#include "format.hpp"
+
 #include "wifi_config.hpp"
 #include "common_config.hpp"
 
 #define WEB_SERVER_PORT 80
 
+extern const uint8_t binary_lib_web_bootstrap_min_css_gz_start[] asm("_binary_lib_web_bootstrap_min_css_gz_start");
+extern const uint8_t binary_lib_web_bootstrap_min_css_gz_end[] asm("_binary_lib_web_bootstrap_min_css_gz_end");
+extern const uint8_t binary_lib_web_bootstrap_min_js_gz_start[] asm("_binary_lib_web_bootstrap_min_js_gz_start");
+extern const uint8_t binary_lib_web_bootstrap_min_js_gz_end[] asm("_binary_lib_web_bootstrap_min_js_gz_end");
 
 class WebSrv
 {
@@ -28,6 +35,8 @@ class WebSrv
         bool _isAP;
 
         void handleStyles();
+        void handleBootstrapCss();
+        void handleBootstrapJs();
         void handleScripts();
         void handleShowIndex();
         void handleShowPublish(String message);
@@ -48,10 +57,11 @@ class WebSrv
                                  int maxLength,
                                  bool isReadonly,
                                  bool isPassword);
+        void sendContentGzip(const unsigned char *content, size_t length, const char *mime_type);
 
     public:
         typedef std::function<void(void)> TRebootFunction;
-        typedef std::function<void(String topic, String payload, bool qos, bool retain, int message_id)> TPublishMessageFunction;
+        typedef std::function<void(String topic, String payload)> TPublishMessageFunction;
         typedef std::function<void(String topic_filter)> TSubscribeFunction;
         typedef std::function<void(String topic_filter)> TUnsubscribeFunction;
 #ifdef ESP32

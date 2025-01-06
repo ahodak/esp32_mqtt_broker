@@ -1,5 +1,6 @@
 #pragma once
 
+#include "head.tpl"
 #include "menu.tpl"
 #include "footer.tpl"
 
@@ -8,9 +9,7 @@
 <html lang='ru'>\
     <head>\
         <title>MQTT Broker - Перезагрузка</title>\
-        <meta charset='utf-8'/>\
-        <meta name='viewport' content='width=device-width, initial-scale=1'/>\
-        <link rel='stylesheet' href='/styles.css'/>\
+        " PAGE_HEAD "\
         <script type='text/javascript'>\
         function getUrlVars() {\
             var vars = [], hash;\
@@ -44,8 +43,10 @@
     </head>\
     <body>\
         " MENU_PAGE "\
-        <div class='alert alert-info'>\
-            <strong id='info'>Модуль будет перезагружен через %delay% секунд.</strong>\
+        <div class='container'>\
+            <div id='info' class='alert alert-info' role='alert'>\
+                Модуль будет перезагружен через %delay% секунд.\
+            </div>\
         </div>\
         " FOOTER_PAGE "\
     </body>\

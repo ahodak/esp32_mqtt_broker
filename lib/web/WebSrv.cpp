@@ -27,6 +27,8 @@ void WebSrv::init(ESP8266WebServer* server,
                 TUnsubscribeFunction unsubscribeFunction) {
 
     server->on("/", HTTP_GET, [this](){ handleShowIndex(); });
+    server->on("/bootstrap.min.css", HTTP_GET, [this](){ handleBootstrapCss(); });
+    server->on("/bootstrap.min.js", HTTP_GET, [this](){ handleBootstrapJs(); });
     server->on("/styles.css", HTTP_GET, [this](){ handleStyles(); });
     server->on("/scripts.js", HTTP_GET, [this](){ handleScripts(); });
     server->on("/publish", HTTP_GET, [this](){ handleShowPublish(""); });
@@ -65,15 +67,42 @@ void WebSrv::handleScripts() {
     this->_server->send(200, "text/javascript", SCRIPTS);
 }
 
+// Обработчик загрузки bootstrap.min.css
+void WebSrv::handleBootstrapCss() {
+    this->_server->sendHeader("Cache-Control", "max-age=86400");
+    this->sendContentGzip(binary_lib_web_bootstrap_min_css_gz_start, binary_lib_web_bootstrap_min_css_gz_end - binary_lib_web_bootstrap_min_css_gz_start, "text/css");
+}
+
+// Обработчик загрузки bootstrap.min.js
+void WebSrv::handleBootstrapJs() {
+    this->_server->sendHeader("Cache-Control", "max-age=86400");
+    this->sendContentGzip(binary_lib_web_bootstrap_min_js_gz_start, binary_lib_web_bootstrap_min_js_gz_end - binary_lib_web_bootstrap_min_js_gz_start, "text/javascript");
+}
+
 // Обработчик главной страницы
 void WebSrv::handleShowIndex() {
     String html = INDEX_PAGE;
     replaceCommonTemplateVars(html);
-    html.replace("%ssid%", this->_wifiConfig->ssid());
-    html.replace("%local_ip%", WiFi.localIP().toString());
-    html.replace("%ip%", WiFi.localIP().toString());
+    html.replace("%module_chip_model%", ESP.getChipModel());
+    html.replace("%module_chip_revision%", String(ESP.getChipRevision()));
+    html.replace("%module_chip_cores%", String(ESP.getChipCores()));
+    html.replace("%module_chip_speed%", String(ESP.getCpuFreqMHz()));
+    html.replace("%module_chip_flash_size%", format_memory(ESP.getFlashChipSize(), 0));
+    
+    html.replace("%module_heap_size%", format_memory(ESP.getHeapSize()));
+    html.replace("%module_heap_free%", format_memory(ESP.getFreeHeap()));
+    html.replace("%module_heap_max%", format_memory(ESP.getMaxAllocHeap()));
+    
+    html.replace("%uptime%", format_duration(millis() / 1000));
+
     html.replace("%mqtt_user%", this->_commonConfig->mqttUser());
     html.replace("%mqtt_password%", this->_commonConfig->mqttPassword());
+    
+    html.replace("%ip%", WiFi.localIP().toString());
+    html.replace("%mac_address%", WiFi.macAddress());
+    html.replace("%ssid%", WiFi.SSID());
+    html.replace("%rssi%", String(WiFi.RSSI()));
+
 
     processConditionalBlock(html, "ap_mode", _isAP);
     processConditionalBlock(html, "sta_mode", !_isAP);
@@ -106,18 +135,7 @@ void WebSrv::handlePublish() {
         return;
     }
 
-    // Устанавливаем значения по умолчанию если параметры отсутствуют
-    int qos = this->_server->hasArg("qos") ? this->_server->arg("qos").toInt() : 0;
-    bool retain = this->_server->hasArg("retain") ? (this->_server->arg("retain") == "on") : false;
-    int message_id = this->_server->hasArg("message_id") ? this->_server->arg("message_id").toInt() : 0;
-
-    // Валидация QoS
-    if (qos < 0 || qos > 2) {
-        this->handleShowPublish("Ошибка: недопустимое значение QoS");
-        return;
-    }
-
-    this->publishMessageFunction(topic, payload, qos, retain, message_id);
+    this->publishMessageFunction(topic, payload);
     this->handleShowPublish("Опубликовали");
 }
 
@@ -198,10 +216,9 @@ void WebSrv::handleSaveSettings() {
         this->_commonConfig->rebootDelay(this->_server->arg("reboot_delay").toInt());
     }
     this->_wifiConfig->save();
+    this->_commonConfig->save();
 
-    String html = ALERT_PAGE;
-    html.replace("%message%", "Настройки сохранены. Перезагрузите устройство чтобы изменения вступили в силу.");
-    this->_server->send(200, "text/html", html);
+    handleShowSettings();
 }
 
 // Обработчик страницы перезагрузки
@@ -257,4 +274,14 @@ void WebSrv::processConditionalBlock(String& html, const String& conditionName, 
 // Подставить в шаблон значения переменных
 void WebSrv::replaceCommonTemplateVars(String& html) {
     html.replace("%delay%", String(this->_commonConfig->rebootDelay()));
+    html.replace("%version%", APP_VERSION);
 }
+
+void WebSrv::sendContentGzip(const unsigned char *content, size_t length, const char *mime_type)
+{
+    this->_server->sendHeader("Content-encoding", "gzip");
+    this->_server->setContentLength(length);
+    this->_server->send(200, mime_type, "");
+    this->_server->sendContent(reinterpret_cast<const char *>(content), length);
+}
+
