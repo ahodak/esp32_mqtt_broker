@@ -14,18 +14,18 @@
         </li>\
         <li class='nav-item dropdown'>\
           <a class='nav-link dropdown-toggle' id='navbarUtilitiesDropdown' role='button' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>\
-            Сообщения\
+            Тесты\
           </a>\
           <ul class='dropdown-menu dropdown-menu-dark' aria-labelledby='navbarUtilitiesDropdown'>\
-            <li><a class='dropdown-item' href='/subscribe'>Подписка</a></li>\
-            <li><a class='dropdown-item' href='/publish'>Публикация</a></li>\
+            <li><a class='dropdown-item' href='/subscribe'>Подписаться</a></li>\
+            <li><a class='dropdown-item' href='/publish'>Опубликовать</a></li>\
           </ul>\
         </li>\
         <li class='nav-item'>\
           <a class='nav-link' href='/setup'>Настройка</a>\
         </li>\
         <li class='nav-item'>\
-          <a class='nav-link text-danger' href='/reboot?delay=%delay%'>Перезагрузка</a>\
+          <a class='nav-link reboot' href='/reboot?delay=%delay%'>Перезагрузка</a>\
         </li>\
       </ul>\
     </div>\

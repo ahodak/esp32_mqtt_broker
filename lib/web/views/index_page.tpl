@@ -53,31 +53,6 @@
                 </div>\
                 <div class='col-md-6'>\
                     <div class='card bg-light mb-3'>\
-                        <h5 class='card-header'>Сеть</h5>\
-                        <div class='card-body'>\
-                            <div class='row'>\
-                                <div class='col-4'>SSID:</div>\
-                                <div class='col-8'>%ssid%</div>\
-                            </div>\
-                            <div class='row'>\
-                                <div class='col-4'>IP:</div>\
-                                <div class='col-8'>%ip%</div>\
-                            </div>\
-                            <div class='row'>\
-                                <div class='col-4'>MAC:</div>\
-                                <div class='col-8'>%mac_address%</div>\
-                            </div>\
-                            <div class='row'>\
-                                <div class='col-4'>RSSI:</div>\
-                                <div class='col-8'>%rssi% дБм</div>\
-                            </div>\
-                        </div>\
-                    </div>\
-                </div>\
-            </div>\
-            <div class='row'>\
-                <div class='col-md-6'>\
-                    <div class='card bg-light mb-3'>\
                         <h5 class='card-header'>Модуль</h5>\
                         <div class='card-body'>\
                             <div class='row'>\
@@ -103,17 +78,42 @@
                         </div>\
                     </div>\
                 </div>\
+            </div>\
+            <div class='row'>\
+                <div class='col-md-6'>\
+                    <div class='card bg-light mb-3'>\
+                        <h5 class='card-header'>Сеть</h5>\
+                        <div class='card-body'>\
+                            <div class='row'>\
+                                <div class='col-4'>SSID:</div>\
+                                <div class='col-8'>%ssid%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>IP:</div>\
+                                <div class='col-8'>%ip%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>MAC:</div>\
+                                <div class='col-8'>%mac_address%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Уровень сигнала:</div>\
+                                <div class='col-8'><span id='rssi'>%rssi%</span> дБм</div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>\
                 <div class='col-md-6'>\
                     <div class='card bg-light mb-3'>\
                         <h5 class='card-header'>Диагностика</h5>\
                         <div class='card-body'>\
                             <div class='row'>\
                                 <div class='col-4'>Время работы:</div>\
-                                <div class='col-8'>%uptime%</div>\
+                                <div class='col-8'><span id='uptime'>%uptime%</span> сек.</div>\
                             </div>\
                             <div class='row'>\
                                 <div class='col-4'>Свободно ОЗУ:</div>\
-                                <div class='col-8'>%module_heap_free%</div>\
+                                <div class='col-8'><span id='heap_free'>%module_heap_free%</span> байт</div>\
                             </div>\
                             <div class='row'>\
                                 <div class='col-4'>Макс. размер блока:</div>\
@@ -125,5 +125,24 @@
             </div>\
         </div>\
         " FOOTER_PAGE "\
+        <script>\
+            setInterval(function()\
+            {\
+                getModuleParams();\
+            }, 1000);\
+            function getModuleParams() {\
+                var xhttp = new XMLHttpRequest();\
+                xhttp.onreadystatechange = function() {\
+                    if (this.readyState == 4 && this.status == 200) {\
+                        var params = this.responseText.split(',');\
+                        document.getElementById('rssi').innerHTML = params[0];\
+                        document.getElementById('uptime').innerHTML = params[1];\
+                        document.getElementById('heap_free').innerHTML = params[2];\
+                    }\
+                };\
+                xhttp.open('GET', 'module_params', true);\
+                xhttp.send();\
+            }\
+        </script>\
     </body>\
 </html>"

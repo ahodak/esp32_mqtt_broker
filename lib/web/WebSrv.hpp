@@ -47,6 +47,7 @@ class WebSrv
         void handleShowSettings();
         void handleSaveSettings();
         void handleReboot();
+        void handleGetModuleParams();
         void handleNotFound();
         void processConditionalBlock(String& html, const String& conditionName, bool keepBlock);
         void replaceCommonTemplateVars(String& html);

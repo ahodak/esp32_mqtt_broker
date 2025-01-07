@@ -16,43 +16,49 @@
         <div class='container'>\
             <h1>Настройки</h1>\
             <hr/>\
-            <form action='/setup' method='post' class='needs-validation' novalidate>\
-                <h3>Wi-Fi</h3>\
+            <form action='/setup' method='post' class='settings needs-validation' novalidate>\
                 <div class='row mb-3'>\
-                    <div class='col-6'>\
-                        <div class='form-floating'>\
-                            <input class='form-control' type='text' name='ssid' placeholder='SSID' maxlength='32' value='%ssid%' required/>\
-                            <label for='ssid'>SSID</label>\
+                    <div class='col-md-6'>\
+                        <div class='card bg-light mb-3'>\
+                            <h5 class='card-header'>Wi-Fi</h5>\
+                            <div class='card-body'>\
+                                <div class='form-floating'>\
+                                    <input class='form-control ssid' type='text' name='ssid' placeholder='SSID' maxlength='32' value='%ssid%' required/>\
+                                    <label for='ssid'>SSID</label>\
+                                </div>\
+                                <div class='form-floating'>\
+                                    <input class='form-control password' type='password' name='password' placeholder='Пароль' maxlength='32' value='%password%' required/>\
+                                    <label for='password'>Пароль</label>\
+                                </div>\
+                            </div>\
                         </div>\
                     </div>\
-                    <div class='col-6'>\
-                        <div class='form-floating'>\
-                            <input class='form-control' type='password' name='password' placeholder='Пароль' maxlength='32' value='%password%' required/>\
-                            <label for='password'>Пароль</label>\
+                    <div class='col-md-6'>\
+                        <div class='card bg-light mb-3'>\
+                            <h5 class='card-header'>MQTT</h5>\
+                            <div class='card-body'>\
+                                <div class='form-floating'>\
+                                    <input class='form-control mqtt_user' type='text' name='mqtt_user' placeholder='Пользователь' maxlength='32' value='%mqtt_user%'/>\
+                                    <label for='mqtt_user'>Пользователь</label>\
+                                </div>\
+                                <div class='form-floating'>\
+                                    <input class='form-control mqtt_password' type='password' name='mqtt_password' placeholder='Пароль' maxlength='32' value='%mqtt_password%'/>\
+                                    <label for='mqtt_password'>Пароль</label>\
+                                </div>\
+                            </div>\
                         </div>\
                     </div>\
                 </div>\
-                <h3>MQTT</h3>\
                 <div class='row mb-3'>\
-                    <div class='col-6'>\
-                        <div class='form-floating'>\
-                            <input class='form-control' type='text' name='mqtt_user' placeholder='Пользователь' maxlength='32' value='%mqtt_user%'/>\
-                            <label for='mqtt_user'>Пользователь</label>\
-                        </div>\
-                    </div>\
-                    <div class='col-6'>\
-                        <div class='form-floating'>\
-                            <input class='form-control' type='password' name='mqtt_password' placeholder='Пароль' maxlength='32' value='%mqtt_password%'/>\
-                            <label for='mqtt_password'>Пароль</label>\
-                        </div>\
-                    </div>\
-                </div>\
-                <h3>Перезагрузка</h3>\
-                <div class='row mb-3'>\
-                    <div class='col-6'>\
-                        <div class='form-floating'>\
-                            <input class='form-control' type='number' name='reboot_delay' placeholder='Задержка перезагрузки' value='%delay%' required/>\
-                            <label for='reboot_delay'>Перезагрузка, сек:</label>\
+                    <div class='col-md-6'>\
+                        <div class='card bg-light mb-3'>\
+                            <h5 class='card-header'>Перезагрузка</h5>\
+                            <div class='card-body'>\
+                                <div class='form-floating'>\
+                                    <input class='form-control' type='number' name='reboot_delay' placeholder='Задержка перезагрузки' value='%delay%' required/>\
+                                    <label for='reboot_delay'>Перезагрузка, сек:</label>\
+                                </div>\
+                            </div>\
                         </div>\
                     </div>\
                 </div>\

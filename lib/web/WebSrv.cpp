@@ -39,6 +39,7 @@ void WebSrv::init(ESP8266WebServer* server,
     server->on("/setup", HTTP_GET, [this](){ handleShowSettings(); });
     server->on("/setup", HTTP_POST, [this](){ handleSaveSettings(); });
     server->on("/reboot", HTTP_GET, [this](){ handleReboot(); });
+    server->on("/module_params", HTTP_GET, [this](){ handleGetModuleParams(); });
     server->onNotFound([this](){ handleNotFound(); });
     server->begin();
 
@@ -229,6 +230,13 @@ void WebSrv::handleReboot() {
     this->_server->send(200, "text/html", html);
 
     this->rebootFunction();
+}
+
+void WebSrv::handleGetModuleParams() {
+    String params = String(WiFi.RSSI()) + "," + 
+                    format_duration(millis() / 1000) + "," + 
+                    format_memory(ESP.getFreeHeap());
+    this->_server->send(200, "text/plain", params);
 }
 
 // Обработчик страницы ошибки 404
