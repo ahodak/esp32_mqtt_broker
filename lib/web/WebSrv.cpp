@@ -232,14 +232,16 @@ void WebSrv::handleShowFirmwareUpdate() {
     String new_version = this->getAppVersionFunction();
     String html = OTA_PAGE;
     replaceCommonTemplateVars(html);
-    html.replace("%version%", String(APP_VERSION, 1U));
+    html.replace("%version%", APP_VERSION);
     html.replace("%new_version%", new_version);
 
     if (new_version == "N/A") {
         processConditionalBlock(html, "has_new_version", false);
     }
     else {
-        processConditionalBlock(html, "has_new_version", new_version.toFloat() > String(APP_VERSION).toFloat());
+        std::string new_version_str(new_version.c_str());
+        std::string app_version_str(APP_VERSION.c_str());
+        processConditionalBlock(html, "has_new_version", Version::compareVersions(new_version_str, app_version_str) > 0);
     }
 
     this->_server->send(200, "text/html", html);
@@ -322,7 +324,7 @@ void WebSrv::replaceCommonTemplateVars(String& html) {
     int rebootDelay = preferences.getUInt("rebootDelay", DEFAULT_REBOOT_DELAY);
     preferences.end();
     html.replace("%delay%", String(rebootDelay));
-    html.replace("%version%", String(APP_VERSION, 1U));
+    html.replace("%version%", APP_VERSION);
 }
 
 void WebSrv::sendContentGzip(const unsigned char *content, size_t length, const char *mime_type)

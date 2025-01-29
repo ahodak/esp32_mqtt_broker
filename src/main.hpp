@@ -14,20 +14,21 @@
 
 #include <WiFi.h>
 #include <WebServer.h>
+#include <WiFiClientSecure.h>
+#include <HTTPUpdate.h>
 
+#include "app_version.hpp"
 #include "default_values.hpp"
 #include "network_params.hpp"
 #include "display.hpp"
 #include "WebSrv.hpp"
 #include "mqtt.hpp"
-#include <WiFiClientSecure.h>
-#include <HTTPUpdate.h>
 
 extern const uint8_t binary_include_github_ca_pem_start[] asm("_binary_include_github_ca_pem_start");
 extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_github_ca_pem_end");
 
 #define GITHUB_HOST  "raw.githubusercontent.com"
-#define VERSION_URL  "/ahodak/esp32_mqtt_broker/master/firmware/version.txt"
+#define VERSION_URL  "/ahodak/esp32_mqtt_broker/master/include/app_version.hpp"
 #define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/master/firmware/ttgo-t-display/firmware.bin"
 #define OTA_ATTEMPTS 3
 #define OTA_DELAY    1000

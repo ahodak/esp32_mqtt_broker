@@ -12,8 +12,10 @@
 #include <esp_log.h>
 
 #include "format.hpp"
+#include "app_version.hpp"
 #include "network_params.hpp"
 #include "default_values.hpp"
+#include <version.hpp>
 
 #include "views/styles.tpl"
 #include "views/scripts.tpl"

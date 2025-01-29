@@ -2,7 +2,6 @@
 
 // Тег для логирования
 static const char* _logTAG = "Main";
-String _version = String(APP_VERSION);
 
 // Переменные состояния
 bool isConnected = false;
@@ -167,7 +166,9 @@ String getAppVersion() {
     String response = client.readString();
     ESP_LOGV(_logTAG, "Response: %s", response.c_str());
     if (response.startsWith("HTTP/1.1 200 OK")) {
-        response = response.substring(response.indexOf("\r\n\r\n") + 4);
+        int startIndex = response.indexOf("\"") + 1;
+        int endIndex = response.lastIndexOf("\"") - 1;
+        response = response.substring(startIndex, endIndex);
         ESP_LOGI(_logTAG, "Latest firmware version: %s", response.c_str());
     } else {
         response = "N/A";
@@ -193,7 +194,7 @@ void setup() {
     previousMillis = 0;
 
     Serial.println("Starting...");
-    Serial.println("Firmware version: " + String(APP_VERSION, 1U));
+    Serial.println("Firmware version: " + String(APP_VERSION));
 
     // Инициализация дисплея
     display.init();

@@ -31,7 +31,7 @@ void Display::clear() {
     Serial.println("");
     #ifdef TTGO_T_DISPLAY
     this->_tft->fillScreen(TFT_BLACK);
-    ESP_LOGI("Main", "Display cleared");
+    ESP_LOGD("Main", "Display cleared");
     #endif
 
     ESP_LOGV(_logTAG, "OUT: Display::clear()");

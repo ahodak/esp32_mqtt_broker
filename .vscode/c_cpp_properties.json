@@ -225,6 +225,7 @@
                 "/Users/trion/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                 "/Users/trion/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                 "/Users/trion/.platformio/packages/framework-arduinoespressif32/variants/ttgo-lora32-v1",
+                "/Users/trion/Projects/ESP32/esp_mqtt_broker/lib/version",
                 "/Users/trion/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                 "/Users/trion/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                 "/Users/trion/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -468,6 +469,7 @@
                     "/Users/trion/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include",
                     "/Users/trion/.platformio/packages/framework-arduinoespressif32/cores/esp32",
                     "/Users/trion/.platformio/packages/framework-arduinoespressif32/variants/ttgo-lora32-v1",
+                    "/Users/trion/Projects/ESP32/esp_mqtt_broker/lib/version",
                     "/Users/trion/.platformio/packages/framework-arduinoespressif32/libraries/ArduinoOTA/src",
                     "/Users/trion/.platformio/packages/framework-arduinoespressif32/libraries/AsyncUDP/src",
                     "/Users/trion/.platformio/packages/framework-arduinoespressif32/libraries/BLE/src",
@@ -495,7 +497,6 @@
             "defines": [
                 "PLATFORMIO=60116",
                 "ARDUINO_TTGO_LoRa32_V1",
-                "APP_VERSION=1.0",
                 "CORE_DEBUG_LEVEL=3",
                 "UNITY_INCLUDE_PRINT_FORMATTED",
                 "UNITY_OUTPUT_COLOR",
