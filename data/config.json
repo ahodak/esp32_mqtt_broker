@@ -1,0 +1,14 @@
+{
+    "WiFi": {
+        "SSID": "<YOUR_SSID>",
+        "Password": "<YOUR_PASSWORD>",
+        "Hostname": "esp-mqtt"
+    },
+    "MQTT": {
+        "Username": "admin",
+        "Password": "admin"
+    },
+    "Module": {
+        "RebootDelay": 5
+    }
+}
