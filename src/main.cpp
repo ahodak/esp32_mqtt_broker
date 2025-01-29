@@ -110,7 +110,6 @@ void otaStart()
     display.clear();
     display.line("Firmware update started");
     ESP_LOGD(_logTAG, "Source URL: %s", FIRMWARE_URL);
-    ESP_LOGD(_logTAG, "CA cert:\n%s", String((char *)binary_include_github_ca_pem_start).c_str());
 
     WiFiClientSecure client;
     // Сертификат должен содержать данные центра сертификации который выдает сертификат для github.com

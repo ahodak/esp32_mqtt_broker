@@ -27,8 +27,8 @@ extern const uint8_t binary_include_github_ca_pem_start[] asm("_binary_include_g
 extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_github_ca_pem_end");
 
 #define GITHUB_HOST  "raw.githubusercontent.com"
-#define VERSION_URL  "/ahodak/esp32_mqtt_broker/ota/firmware/version.txt"
-#define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/ota/firmware/ttgo-t-display/firmware.bin"
+#define VERSION_URL  "/ahodak/esp32_mqtt_broker/master/firmware/version.txt"
+#define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/master/firmware/ttgo-t-display/firmware.bin"
 #define OTA_ATTEMPTS 3
 #define OTA_DELAY    1000
 
