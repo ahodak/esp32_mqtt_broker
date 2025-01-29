@@ -237,6 +237,7 @@ void WebSrv::handleShowFirmwareUpdate() {
 
     if (new_version == "N/A") {
         processConditionalBlock(html, "has_new_version", false);
+        processConditionalBlock(html, "new_version_unavailable", true);
     }
     else {
         std::string new_version_str(new_version.c_str());

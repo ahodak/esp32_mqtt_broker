@@ -164,10 +164,10 @@ String getAppVersion() {
     client.print("\r\n");
     ESP_LOGV(_logTAG, "\r\n");
     String response = client.readString();
-    ESP_LOGV(_logTAG, "Response: %s", response.c_str());
+    ESP_LOGD(_logTAG, "Response: %s", response.c_str());
     if (response.startsWith("HTTP/1.1 200 OK")) {
-        int startIndex = response.indexOf("\"") + 1;
-        int endIndex = response.lastIndexOf("\"") - 1;
+        int startIndex = response.indexOf("APP_VERSION") + 20;
+        int endIndex = response.lastIndexOf("\"");
         response = response.substring(startIndex, endIndex);
         ESP_LOGI(_logTAG, "Latest firmware version: %s", response.c_str());
     } else {

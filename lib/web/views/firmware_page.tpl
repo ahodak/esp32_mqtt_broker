@@ -23,6 +23,9 @@
                 <button type='submit' class='btn btn-primary'>Обновить</button>\
             </form>\
 %endif_has_new_version%\
+%if_new_version_unavailable%\
+            <p class='text-danger'>Не удалось получить информацию о последней версии</p>\
+%endif_new_version_unavailable%\
         </div>\
         " FOOTER_PAGE "\
     </body>\

@@ -7,8 +7,8 @@
 #pragma once
 
 #define CONFIG_FILE "/config.json"
-#define DEFAULT_SSID "MyNewHome"
-#define DEFAULT_PASSWORD "tri0n ctnm"
+#define DEFAULT_SSID "YourSSID"
+#define DEFAULT_PASSWORD "YourPassword"
 #define DEFAULT_HOSTNAME "esp-mqtt"
 #define DEFAULT_MQTT_USERNAME "admin"
 #define DEFAULT_MQTT_PASSWORD "admin"
