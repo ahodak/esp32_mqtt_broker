@@ -500,7 +500,7 @@
                 "CORE_DEBUG_LEVEL=3",
                 "UNITY_INCLUDE_PRINT_FORMATTED",
                 "UNITY_OUTPUT_COLOR",
-                "TTGO_T_DISPLAY=1",
+                "TTGO_T_DISPLAY",
                 "TOUCH_CS=-1",
                 "GPIO_BUTTON_TOP=35",
                 "GPIO_BUTTON_BOTTOM=0",

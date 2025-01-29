@@ -29,7 +29,13 @@ extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_git
 
 #define GITHUB_HOST  "raw.githubusercontent.com"
 #define VERSION_URL  "/ahodak/esp32_mqtt_broker/master/include/app_version.hpp"
+#ifdef TTGO_T_DISPLAY
 #define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/master/firmware/ttgo-t-display/firmware.bin"
+#elif defined(WIRELESS_TAG)
+#define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/master/firmware/wireless-tag/firmware.bin"
+#else
+#define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/master/firmware/esp32dev/firmware.bin"
+#endif
 #define OTA_ATTEMPTS 3
 #define OTA_DELAY    1000
 

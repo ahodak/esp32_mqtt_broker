@@ -243,6 +243,7 @@ void WebSrv::handleShowFirmwareUpdate() {
         std::string new_version_str(new_version.c_str());
         std::string app_version_str(APP_VERSION.c_str());
         processConditionalBlock(html, "has_new_version", Version::compareVersions(new_version_str, app_version_str) > 0);
+        processConditionalBlock(html, "new_version_unavailable", false);
     }
 
     this->_server->send(200, "text/html", html);
