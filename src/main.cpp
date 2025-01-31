@@ -322,9 +322,7 @@ void setup() {
     if (isConnected) {
         // Инициализация MQTT брокера
         ESP_LOGD(_logTAG, "Initializing MQTT broker");
-        broker.init(&broker,
-            mqttUser.c_str(),
-            mqttPassword.c_str());
+        broker.init(mqttUser.c_str(), mqttPassword.c_str());
         display.line("MQTT Broker Started");
         display.line("- Username: " + mqttUser);
         display.line("- Password: " + mqttPassword);
