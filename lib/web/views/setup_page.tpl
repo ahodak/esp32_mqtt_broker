@@ -23,15 +23,15 @@
                             <h5 class='card-header'>Wi-Fi</h5>\
                             <div class='card-body'>\
                                 <div class='form-floating'>\
-                                    <input class='form-control ssid' type='text' name='ssid' placeholder='SSID' maxlength='32' value='%ssid%' required/>\
+                                    <input class='form-control top_field' type='text' name='ssid' placeholder='SSID' maxlength='32' value='%ssid%' required/>\
                                     <label for='ssid'>SSID</label>\
                                 </div>\
                                 <div class='form-floating'>\
-                                    <input class='form-control password' type='password' name='password' placeholder='Пароль' maxlength='32' value='%password%' required/>\
+                                    <input class='form-control middle_field' type='password' name='password' placeholder='Пароль' maxlength='32' value='%password%' required/>\
                                     <label for='password'>Пароль</label>\
                                 </div>\
                                 <div class='form-floating'>\
-                                    <input class='form-control hostname' type='text' name='hostname' placeholder='esp-mqtt' maxlength='25' value='%hostname%' required/>\
+                                    <input class='form-control bottom_field' type='text' name='hostname' placeholder='esp-mqtt' maxlength='25' value='%hostname%' required/>\
                                     <label for='hostname'>Имя хоста</label>\
                                 </div>\
                             </div>\
@@ -42,11 +42,11 @@
                             <h5 class='card-header'>MQTT</h5>\
                             <div class='card-body'>\
                                 <div class='form-floating'>\
-                                    <input class='form-control mqtt_user' type='text' name='mqtt_user' placeholder='Пользователь' maxlength='32' value='%mqtt_user%'/>\
+                                    <input class='form-control top_field' type='text' name='mqtt_user' placeholder='Пользователь' maxlength='32' value='%mqtt_user%'/>\
                                     <label for='mqtt_user'>Пользователь</label>\
                                 </div>\
                                 <div class='form-floating'>\
-                                    <input class='form-control mqtt_password' type='password' name='mqtt_password' placeholder='Пароль' maxlength='32' value='%mqtt_password%'/>\
+                                    <input class='form-control bottom_field' type='password' name='mqtt_password' placeholder='Пароль' maxlength='32' value='%mqtt_password%'/>\
                                     <label for='mqtt_password'>Пароль</label>\
                                 </div>\
                             </div>\
@@ -65,6 +65,27 @@
                             </div>\
                         </div>\
                     </div>\
+%if_sensors_enabled%\
+                    <div class='col-md-6'>\
+                        <div class='card bg-light mb-3'>\
+                            <h5 class='card-header'>Датчик температуры (DS18B20)</h5>\
+                            <div class='card-body'>\
+                                <div class='form-floating'>\
+                                    <input class='form-control top_field' type='number' name='temperature0' value='%temperature0%' required/>\
+                                    <label for='temperature0'>Показание при 0&deg;С</label>\
+                                </div>\
+                                <div class='form-floating'>\
+                                    <input class='form-control middle_field' type='number' name='temperature100' value='%temperature100%' required/>\
+                                    <label for='temperature100'>Показание при 100&deg;С</label>\
+                                </div>\
+                                <div class='form-floating'>\
+                                    <input class='form-control bottom_field' type='text' name='temperatureTopic' value='%temperatureTopic%' required/>\
+                                    <label for='temperatureTopic'>MQTT топик</label>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+%endif_sensors_enabled%\
                 </div>\
                 <hr/>\
                 <button type='submit' class='btn btn-primary'>Сохранить</button>\

@@ -89,12 +89,12 @@
                                 <div class='col-8'>%mac_address%</div>\
                             </div>\
                             <div class='row'>\
-                                <div class='col-4'>Host:</div>\
-                                <div class='col-8'>%hostname%</div>\
-                            </div>\
-                            <div class='row'>\
                                 <div class='col-4'>IP:</div>\
                                 <div class='col-8'>%ip%</div>\
+                            </div>\
+                            <div class='row'>\
+                                <div class='col-4'>Host:</div>\
+                                <div class='col-8'>%hostname%</div>\
                             </div>\
 %if_wifi_mode%\
                             <div class='row'>\
@@ -125,6 +125,12 @@
                                 <div class='col-4'>Макс. размер блока:</div>\
                                 <div class='col-8'>%module_heap_max%</div>\
                             </div>\
+%if_sensors_enabled%\
+                            <div class='row'>\
+                                <div class='col-4'>Датчик температуры:</div>\
+                                <div class='col-8'>GPIO%one_wire_bus%</div>\
+                            </div>\
+%endif_sensors_enabled%\
                         </div>\
                     </div>\
                 </div>\

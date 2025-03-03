@@ -3,6 +3,9 @@
 		{
 			"name": "esp_mqtt_broker",
 			"path": "."
+		},
+		{
+			"path": "../OTGateway"
 		}
 	],
 	"settings": {

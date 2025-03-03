@@ -34,6 +34,8 @@ extern const uint8_t binary_lib_web_bootstrap_min_css_gz_start[] asm("_binary_li
 extern const uint8_t binary_lib_web_bootstrap_min_css_gz_end[] asm("_binary_lib_web_bootstrap_min_css_gz_end");
 extern const uint8_t binary_lib_web_bootstrap_min_js_gz_start[] asm("_binary_lib_web_bootstrap_min_js_gz_start");
 extern const uint8_t binary_lib_web_bootstrap_min_js_gz_end[] asm("_binary_lib_web_bootstrap_min_js_gz_end");
+extern const uint8_t binary_lib_web_favicon_ico_gz_start[] asm("_binary_lib_web_favicon_ico_gz_start");
+extern const uint8_t binary_lib_web_favicon_ico_gz_end[] asm("_binary_lib_web_favicon_ico_gz_end");
 
 class WebSrv
 {
@@ -50,6 +52,7 @@ class WebSrv
         void handleStyles();
         void handleBootstrapCss();
         void handleBootstrapJs();
+        void handleFavicon();
         void handleScripts();
         void handleShowIndex();
         void handleShowPublish(String message);
@@ -63,6 +66,7 @@ class WebSrv
         void handleFirmwareUpgrade();
         void handleReboot();
         void handleGetModuleParams();
+        void handleHealthCheck();
         void handleNotFound();
         void processConditionalBlock(String& html, const String& conditionName, bool keepBlock);
         void replaceCommonTemplateVars(String& html);

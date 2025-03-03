@@ -13,3 +13,9 @@
 #define DEFAULT_MQTT_USERNAME "admin"
 #define DEFAULT_MQTT_PASSWORD "admin"
 #define DEFAULT_REBOOT_DELAY 5
+
+#ifdef USE_SENSORS
+#define DEFAULT_TEMPERATURE_TOPIC "opentherm/sensors/room_temp/set"
+#define DEFAULT_TEMPERATURE_0 0.0f
+#define DEFAULT_TEMPERATURE_100 100.0f
+#endif

@@ -13,6 +13,7 @@ void WebSrv::init(WebServer* server,
     server->on("/", HTTP_GET, [this](){ handleShowIndex(); });
     server->on("/bootstrap.min.css", HTTP_GET, [this](){ handleBootstrapCss(); });
     server->on("/bootstrap.min.js", HTTP_GET, [this](){ handleBootstrapJs(); });
+    server->on("/favicon.ico", HTTP_GET, [this](){ handleFavicon(); });
     server->on("/styles.css", HTTP_GET, [this](){ handleStyles(); });
     server->on("/scripts.js", HTTP_GET, [this](){ handleScripts(); });
     server->on("/publish", HTTP_GET, [this](){ handleShowPublish(""); });
@@ -26,6 +27,7 @@ void WebSrv::init(WebServer* server,
     server->on("/firmware", HTTP_POST, [this](){ handleFirmwareUpgrade(); });
     server->on("/reboot", HTTP_GET, [this](){ handleReboot(); });
     server->on("/module_params", HTTP_GET, [this](){ handleGetModuleParams(); });
+    server->on("/health", HTTP_GET, [this](){ handleHealthCheck(); });
     server->onNotFound([this](){ handleNotFound(); });
     server->begin();
 
@@ -66,6 +68,11 @@ void WebSrv::handleBootstrapJs() {
     this->sendContentGzip(binary_lib_web_bootstrap_min_js_gz_start, binary_lib_web_bootstrap_min_js_gz_end - binary_lib_web_bootstrap_min_js_gz_start, "text/javascript");
 }
 
+// Обработчик загрузки favicon.ico
+void WebSrv::handleFavicon() {
+    this->sendContentGzip(binary_lib_web_favicon_ico_gz_start, binary_lib_web_favicon_ico_gz_end - binary_lib_web_favicon_ico_gz_start, "image/x-icon");
+}
+
 // Обработчик главной страницы
 void WebSrv::handleShowIndex() {
     String html = INDEX_PAGE;
@@ -104,6 +111,12 @@ void WebSrv::handleShowIndex() {
     }
     else
         html.replace("%network%", "Ethernet");
+
+    #ifdef USE_SENSORS
+    html.replace("%one_wire_bus%", String(ONE_WIRE_BUS));
+    processConditionalBlock(html, "sensors_enabled", USE_SENSORS==1);
+    #endif
+
 
     this->_server->send(200, "text/html", html);
 }
@@ -198,6 +211,12 @@ void WebSrv::handleShowSettings() {
     html.replace("%mqtt_user%", preferences.getString("mqttUser", DEFAULT_MQTT_USERNAME));
     html.replace("%mqtt_password%", preferences.getString("mqttPassword", DEFAULT_MQTT_PASSWORD));
     html.replace("%reboot_delay%", String(preferences.getUInt("rebootDelay", DEFAULT_REBOOT_DELAY)));
+    #ifdef USE_SENSORS
+    html.replace("%temperature0%", String(preferences.getFloat("temperature0", DEFAULT_TEMPERATURE_0)));
+    html.replace("%temperature100%", String(preferences.getFloat("temperature100", DEFAULT_TEMPERATURE_100)));
+    html.replace("%temperatureTopic%", preferences.getString("temperatureTopic", DEFAULT_TEMPERATURE_TOPIC));
+    processConditionalBlock(html, "sensors_enabled", USE_SENSORS==1);
+    #endif
     preferences.end();
     this->_server->send(200, "text/html", html);
 }
@@ -221,6 +240,14 @@ void WebSrv::handleSaveSettings() {
     if (this->_server->hasArg("reboot_delay")) {
         preferences.putUInt("rebootDelay", this->_server->arg("reboot_delay").toInt());
     }
+
+    #ifdef USE_SENSORS
+    if (this->_server->hasArg("temperature0") && this->_server->hasArg("temperature100") && this->_server->hasArg("temperatureTopic")) {
+        preferences.putFloat("temperature0", this->_server->arg("temperature0").toFloat());
+        preferences.putFloat("temperature100", this->_server->arg("temperature100").toFloat());
+        preferences.putString("temperatureTopic", this->_server->arg("temperatureTopic"));
+    }
+    #endif
 
     ESP_LOGI(_logTAG, "Settings saved");
     preferences.end();
@@ -288,6 +315,10 @@ void WebSrv::handleGetModuleParams() {
                     format_duration(millis() / 1000) + "," +
                     format_memory(ESP.getFreeHeap());
     this->_server->send(200, "text/plain", params);
+}
+
+void WebSrv::handleHealthCheck() {
+    this->_server->send(200, "text/plain", "OK");
 }
 
 // Обработчик страницы ошибки 404

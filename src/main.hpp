@@ -24,8 +24,14 @@
 #include "WebSrv.hpp"
 #include "mqtt.hpp"
 
+#ifdef USE_SENSORS
+#include "sensors.hpp"
+#endif
+
 extern const uint8_t binary_include_github_ca_pem_start[] asm("_binary_include_github_ca_pem_start");
 extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_github_ca_pem_end");
+
+#define ONE_SECOND 1000
 
 #define GITHUB_HOST  "raw.githubusercontent.com"
 #define VERSION_URL  "/ahodak/esp32_mqtt_broker/master/include/app_version.hpp"
@@ -37,7 +43,7 @@ extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_git
 #define FIRMWARE_URL "/ahodak/esp32_mqtt_broker/master/firmware/esp32dev/firmware.bin"
 #endif
 #define OTA_ATTEMPTS 3
-#define OTA_DELAY    1000
+#define OTA_DELAY    1*ONE_SECOND
 
 #ifdef ARDUINO_WT32_ETH01
 #include <ETH.h>
@@ -55,10 +61,9 @@ extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_git
 #define SERIAL_BAUD_RATE 115200
 
 #define CONNECTION_ATTEMPTS 10
-#define CONNECTION_ATTEMPTS_DELAY 1000
+#define CONNECTION_ATTEMPTS_DELAY ONE_SECOND
 
 #define AP_SSID "MQTT-Broker-Setup"
 #define AP_PASSWORD "12345678"
 
-#define DATA_DELAY 1000
-#define ONE_SECOND 1000
+#define DATA_DELAY 10*ONE_SECOND

@@ -20,6 +20,10 @@ NetworkParams networkParams;
 
 WebServer server;
 WebSrv webServer;
+#ifdef USE_SENSORS
+Sensors* temperatureSensor;
+String temperatureTopic;
+#endif
 
 MQTT broker(MQTT_BROKER_PORT, "WiFiServer");
 
@@ -209,6 +213,11 @@ void setup() {
     String mqttUser = preferences.getString("mqttUser", DEFAULT_MQTT_USERNAME);
     String mqttPassword = preferences.getString("mqttPassword", DEFAULT_MQTT_PASSWORD);
     rebootDelay = preferences.getUInt("rebootDelay", DEFAULT_REBOOT_DELAY);
+    #ifdef USE_SENSORS
+    temperatureTopic = preferences.getString("temperatureTopic", DEFAULT_TEMPERATURE_TOPIC);
+    float temperature0 = preferences.getFloat("temperature0", DEFAULT_TEMPERATURE_0);
+    float temperature100 = preferences.getFloat("temperature100", DEFAULT_TEMPERATURE_100);
+    #endif
     preferences.end();
     ESP_LOGD(_logTAG, "Config initialized");
 
@@ -327,7 +336,15 @@ void setup() {
         display.line("- Username: " + mqttUser);
         display.line("- Password: " + mqttPassword);
     }
-        
+
+    // Инициализация датчиков
+    #ifdef USE_SENSORS
+    ESP_LOGD(_logTAG, "Initializing sensors");
+    temperatureSensor = new Sensors();
+    temperatureSensor->setup();
+    temperatureSensor->calibrate(temperature0, temperature100);
+    #endif
+
     ESP_LOGV(_logTAG, "OUT: setup()");
 }
 
@@ -357,16 +374,19 @@ void loop() {
         }
 		else
 		{
+            currentSensorCycle++;
+
             if (currentSensorCycle % DATA_DELAY == 0)
 			{
-				// rlog_v("Sensor", "Getting sensors data...");
-				// requestSensorValues();
-				// renderSensorValues();
-				// if (WiFi.status() == WL_CONNECTED)
-				// {
-				// 	  sendSensorsData();
-				// }
-			}
+                #ifdef USE_SENSORS
+                if (isConnected) {
+                    float temperature = temperatureSensor->getTemperature();
+                    if (temperature != DEVICE_DISCONNECTED_C) {
+                        publishMessage(temperatureTopic, "{\"connected\":true,\"value\":" + String(temperature, 1U) + "}");
+                    }
+                }
+                #endif
+            }
 		}
     }
 }
