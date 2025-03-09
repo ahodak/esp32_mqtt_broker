@@ -21,9 +21,9 @@ NetworkParams networkParams;
 WebServer server;
 WebSrv webServer;
 #ifdef USE_SENSORS
-int dataDelay;
 Sensors* temperatureSensor;
 String temperatureTopic;
+int dataDelay;
 #endif
 
 MQTT broker(MQTT_BROKER_PORT, "WiFiServer");
@@ -379,7 +379,7 @@ void loop() {
 		{
             currentSensorCycle++;
 
-            if (currentSensorCycle % (dataDelay * ONE_SECOND) == 0)
+            if (currentSensorCycle % dataDelay == 0)
 			{
                 if (isConnected) {
                     float temperature = temperatureSensor->getTemperature();
