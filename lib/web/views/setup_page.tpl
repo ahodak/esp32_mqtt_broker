@@ -79,8 +79,12 @@
                                     <label for='temperature100'>Показание при 100&deg;С</label>\
                                 </div>\
                                 <div class='form-floating'>\
-                                    <input class='form-control bottom_field' type='text' name='temperatureTopic' value='%temperatureTopic%' required/>\
+                                    <input class='form-control middle_field' type='text' name='temperatureTopic' value='%temperatureTopic%' required/>\
                                     <label for='temperatureTopic'>MQTT топик</label>\
+                                </div>\
+                                <div class='form-floating'>\
+                                    <input class='form-control bottom_field' type='number' name='dataDelay' value='%dataDelay%' required/>\
+                                    <label for='dataDelay'>Интервал передачи данных, сек:</label>\
                                 </div>\
                             </div>\
                         </div>\

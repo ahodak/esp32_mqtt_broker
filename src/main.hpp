@@ -65,5 +65,3 @@ extern const uint8_t binary_include_github_ca_pem_end[] asm("_binary_include_git
 
 #define AP_SSID "MQTT-Broker-Setup"
 #define AP_PASSWORD "12345678"
-
-#define DATA_DELAY 10*ONE_SECOND

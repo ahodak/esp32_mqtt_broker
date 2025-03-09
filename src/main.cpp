@@ -21,6 +21,7 @@ NetworkParams networkParams;
 WebServer server;
 WebSrv webServer;
 #ifdef USE_SENSORS
+int dataDelay;
 Sensors* temperatureSensor;
 String temperatureTopic;
 #endif
@@ -214,6 +215,7 @@ void setup() {
     String mqttPassword = preferences.getString("mqttPassword", DEFAULT_MQTT_PASSWORD);
     rebootDelay = preferences.getUInt("rebootDelay", DEFAULT_REBOOT_DELAY);
     #ifdef USE_SENSORS
+    dataDelay = preferences.getUInt("dataDelay", DEFAULT_DATA_DELAY);
     temperatureTopic = preferences.getString("temperatureTopic", DEFAULT_TEMPERATURE_TOPIC);
     float temperature0 = preferences.getFloat("temperature0", DEFAULT_TEMPERATURE_0);
     float temperature100 = preferences.getFloat("temperature100", DEFAULT_TEMPERATURE_100);
@@ -372,21 +374,21 @@ void loop() {
             currentRebootCycle++;
             handleTimerWhileRebooting();
         }
+#ifdef USE_SENSORS
 		else
 		{
             currentSensorCycle++;
 
-            if (currentSensorCycle % DATA_DELAY == 0)
+            if (currentSensorCycle % (dataDelay * ONE_SECOND) == 0)
 			{
-                #ifdef USE_SENSORS
                 if (isConnected) {
                     float temperature = temperatureSensor->getTemperature();
                     if (temperature != DEVICE_DISCONNECTED_C) {
                         publishMessage(temperatureTopic, "{\"connected\":true,\"value\":" + String(temperature, 1U) + "}");
                     }
                 }
-                #endif
             }
 		}
+#endif
     }
 }

@@ -2,4 +2,4 @@
 
 #include <Arduino.h>
 
-#define APP_VERSION String("1.1.0")
+#define APP_VERSION String("1.1.1")

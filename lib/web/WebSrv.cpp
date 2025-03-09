@@ -212,6 +212,7 @@ void WebSrv::handleShowSettings() {
     html.replace("%mqtt_password%", preferences.getString("mqttPassword", DEFAULT_MQTT_PASSWORD));
     html.replace("%reboot_delay%", String(preferences.getUInt("rebootDelay", DEFAULT_REBOOT_DELAY)));
     #ifdef USE_SENSORS
+    html.replace("%dataDelay%", String(preferences.getUInt("dataDelay", DEFAULT_DATA_DELAY)));
     html.replace("%temperature0%", String(preferences.getFloat("temperature0", DEFAULT_TEMPERATURE_0)));
     html.replace("%temperature100%", String(preferences.getFloat("temperature100", DEFAULT_TEMPERATURE_100)));
     html.replace("%temperatureTopic%", preferences.getString("temperatureTopic", DEFAULT_TEMPERATURE_TOPIC));
@@ -226,13 +227,16 @@ void WebSrv::handleSaveSettings() {
     ESP_LOGI(_logTAG, "Saving settings...");
     Preferences preferences;
     preferences.begin("mqtt-broker", false);
-    if (this->_server->hasArg("ssid") && this->_server->hasArg("password") && this->_server->hasArg("hostname")) {
+    if (this->_server->hasArg("ssid") && 
+      this->_server->hasArg("password") && 
+      this->_server->hasArg("hostname")) {
         preferences.putString("ssid", this->_server->arg("ssid"));
         preferences.putString("password", this->_server->arg("password"));
         preferences.putString("hostname", this->_server->arg("hostname"));
     }
 
-    if (this->_server->hasArg("mqtt_user") && this->_server->hasArg("mqtt_password")) {
+    if (this->_server->hasArg("mqtt_user") && 
+      this->_server->hasArg("mqtt_password")) {
         preferences.putString("mqttUser", this->_server->arg("mqtt_user"));
         preferences.putString("mqttPassword", this->_server->arg("mqtt_password"));
     }
@@ -242,7 +246,11 @@ void WebSrv::handleSaveSettings() {
     }
 
     #ifdef USE_SENSORS
-    if (this->_server->hasArg("temperature0") && this->_server->hasArg("temperature100") && this->_server->hasArg("temperatureTopic")) {
+    if (this->_server->hasArg("dataDelay") && 
+      this->_server->hasArg("temperature0") && 
+      this->_server->hasArg("temperature100") && 
+      this->_server->hasArg("temperatureTopic")) {
+        preferences.putUInt("dataDelay", this->_server->arg("dataDelay").toInt());
         preferences.putFloat("temperature0", this->_server->arg("temperature0").toFloat());
         preferences.putFloat("temperature100", this->_server->arg("temperature100").toFloat());
         preferences.putString("temperatureTopic", this->_server->arg("temperatureTopic"));
